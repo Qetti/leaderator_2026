@@ -1,0 +1,54 @@
+{
+  // Container-ის სახელი
+  "name": "Leaderator",
+
+  // Custom Dockerfile-ის გამოყენება
+  "build": {
+    // Dockerfile-ის მდებარეობა (.devcontainer/ ფოლდერის მიმართ)
+    "dockerfile": "Dockerfile",
+    // Build context — პროექტის root დირექტორია
+    // ".." = .devcontainer/-ის parent, ანუ პროექტის root
+    "context": ".."
+  },
+  "features": {
+    "ghcr.io/va-h/devcontainers-features/uv:latest": {}
+  },
+  // VS Code-ის კონფიგურაცია
+  "customizations": {
+    "vscode": {
+      // Extension-ები, რომლებიც container-ში დაინსტალირდება
+      "extensions": [
+        // Python — ენის მხარდაჭერა
+        "ms-python.python",
+        // Jupyter — notebook-ების მხარდაჭერა
+        "ms-toolsai.jupyter",
+      ],
+      // VS Code settings
+      "settings": {
+        // Python interpreter-ის გზა container-ში
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        // Python-ის სპეციფიკური settings
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "ms-python.python"},
+        // Jupyter-ის settings
+        "jupyter.notebookFileRoot": "${workspaceFolder}",
+        // Notebook-ის output-ის ლიმიტის გაზრდა
+        "jupyter.textOutputLimit": 0
+      }
+    }
+  },
+
+  // ავტომატურად გადამისამართებული port-ები
+  // 8888 — Jupyter Notebook server
+  "forwardPorts": [8888, 8000],
+
+  // Container-ის შექმნის შემდეგ ერთხელ გაეშვება
+  // requirements.txt-ის ხელახლა ინსტალაცია
+  // (თუ Dockerfile-ის build შემდეგ requirements.txt შეიცვალა)
+  "postCreateCommand": "uv pip install -r requirements.txt",
+
+  // Container-ში მომხმარებელი
+  // "vscode" — non-root მომხმარებელი (უსაფრთხო)
+  "remoteUser": "vscode"
+}
